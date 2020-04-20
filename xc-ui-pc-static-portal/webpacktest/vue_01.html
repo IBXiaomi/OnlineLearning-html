@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+
+<html charset="UTF-8" lang="en" xmlns:v‐on="http://www.w3.org/1999/xhtml">
+<meta charset="UTF-8">
+<title>vue测试</title>
+
+<body>
+<div id="a">
+    <span v-text="name"></span><br>
+    <input type="text" v-model="num1">+<input type="text" v-model="num2"><span v-text="result"></span>
+    <button v-on:click="change">计算</button>
+</div>
+
+<!--<div id="b">-->
+    <!--<ul>-->
+        <!--<li v-for="(item,index) in list" :key="index">{{index}}&#45;&#45;{{item}}</li>-->
+    <!--</ul>-->
+    <!--<ul>-->
+        <!--<li v-for="(item,index) in userList" :key="item.user.username">-->
+            <!--<div v-if="item.user.username=='wjw'">-->
+                <!--{{index}}&#45;&#45;{{item.user.username}}&#45;&#45;{{item.user.age}}-->
+            <!--</div>-->
+            <!--<div v-else=" " style="background: #761c19" >-->
+                <!--{{index}}&#45;&#45;{{item.user.username}}&#45;&#45;{{item.user.age}}-->
+            <!--</div>-->
+        <!--</li>-->
+    <!--</ul>-->
+<!--</div>-->
+
+
+</body>
+<script src="build.js"></script>
+<!--<script>-->
+    <!--var vm = new Vue({-->
+        <!--el: '#a',-->
+        <!--data: {-->
+            <!--name: "吧嘻小米",-->
+            <!--num1: 0,-->
+            <!--num2: 0,-->
+            <!--result: 0-->
+        <!--},-->
+        <!--methods: {-->
+            <!--change: function () {-->
+                <!--this.result = Number.parseInt(this.num1) + Number.parseInt(this.num2)-->
+            <!--}-->
+        <!--}-->
+    <!--});-->
+    <!--var vm2 = new Vue({-->
+        <!--el: '#b',-->
+        <!--data: {-->
+            <!--list: [1, 2, 3, 4],-->
+            <!--userList: [-->
+                <!--{user: {username: "wjw", age: 10}},-->
+                <!--{user: {username: "baxixiaomi", age: 11}}-->
+            <!--]-->
+        <!--}-->
+
+    <!--});-->
+<!--</script>-->
+</html>
