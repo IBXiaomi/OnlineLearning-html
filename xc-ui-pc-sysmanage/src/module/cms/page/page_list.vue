@@ -21,6 +21,7 @@
       <el-table-column prop="pageCreateTime" label="创建时间" width="180">
       </el-table-column>
     </el-table>
+    <!--冒号相当于v-bind;@符号相当与v-on-->
     <el-pagination
       layout="prev, pager, next"
       :total="total"
@@ -48,12 +49,12 @@
     },
     methods: {
       query: function () {
-        // alert('查询')
+         //alert('查询');
         //调用服务端的接口
-        cmsApi.page_list(this.params.page, this.params.size).then((res) => {
+        cmsApi.page_list(this.params.page, this.params.size).then((result) => {
           //将res结果数据赋值给数据模型对象
-          this.list = res.queryResult.list;
-          this.total = res.queryResult.total;
+          this.list = result.queryResult.list;
+          this.total = result.queryResult.total;
         })
 
       },
