@@ -2,7 +2,7 @@
   <div>
     <el-form v-model="params">
       <!--编写页面静态部分，即view部分-->
-      <el-select v-model="params.siteId" placeholder="请选择" >
+      <el-select v-model="params.siteId" placeholder="请选择">
         <el-option
           v-for="item in siteList"
           :key="item.siteId"
@@ -10,8 +10,16 @@
           :value="item.siteId">
         </el-option>
       </el-select>
-      <el-input v-model="params.pageAliase" placeholder="请输入页面别名" size="small">页面别名</el-input>
-      <el-button type="primary" size="small" v-on:click="query">查询</el-button>
+      页面别名
+      <el-input v-model="params.pageAliase" placeholder="请输入页面别名" style="width:100px"></el-input>
+      <el-button type="primary" size="medium" v-on:click="query">查询</el-button>
+      <router-link :to="{path:'/cms/page/add',query:{
+       page:this.params.page,
+       siteId:this.params.siteId
+
+      }}">
+        <el-button type="primary" size="medium">新增页面</el-button>
+      </router-link>
     </el-form>
     <el-table
       :data="list"
@@ -84,6 +92,10 @@
           this.siteList = result.queryResult.list;
         })
       }
+    },
+    created() {
+      this.params.page = Number.parseInt(this.$route.query.page || 1),
+        this.params.siteId = this.$route.query.siteId || ''
     },
     // 实现进入页面显示数据
     mounted() {

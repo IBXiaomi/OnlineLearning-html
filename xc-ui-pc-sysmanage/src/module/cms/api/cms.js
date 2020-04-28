@@ -17,4 +17,12 @@ export const site_list = () => {
   return http.requestQuickGet(apiUrl + '/cms/page/getAllSite');
 };
 
+export const page_add = (params) => {
+  return http.requestPost(apiUrl + '/cms/page/add', params);
+};
+
+export const template_list = () => {
+  return http.requestQuickGet(apiUrl + '/cms/page/getAllTemplate');
+};
+
 
