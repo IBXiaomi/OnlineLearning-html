@@ -48,8 +48,8 @@
 
     </el-form>
     <div slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="addSubmit">提交</el-button>
-      <el-button type="primary" @click="go_back">返回</el-button>
+      <el-button @click="go_back">返回</el-button>
+      <el-button type="primary" @click.native="addSubmit">提交</el-button>
     </div>
   </div>
 </template>
@@ -97,12 +97,12 @@
         this.$refs['pageForm'].validate((valid) => {
           if (valid) {
             this.$confirm('您确认提交吗?', '提示', {}).then(() => {
-              cmsApi.page_add(this.pageForm).then((result => {
+              cmsApi.update(this.pageId,this.pageForm).then((result => {
                 if (result.success) {
                   this.$message.success("提交成功");
-                  this.$refs['pageForm'].resetFields();
+                  this.go_back();
                 } else {
-                  this.$message.error(result.message)
+                  this.$message.error('提交失败');
                 }
               }))
             })
@@ -126,12 +126,21 @@
       },
 
 
-    }, mounted() {
+    }, mounted: function () {
       this.allTemplateList();
       cmsApi.site_list().then((result => {
         this.siteList = result.queryResult.list
       }))
-    }
+    }, created: function () {
+      this.pageId = this.$route.params.pageId;
+      //根据主键查询页面信息
+      cmsApi.page_get(this.pageId).then((res) => {
+        console.log(res);
+        if (res) {
+          this.pageForm = res;
+        }
+      });
+    },
   }
 </script>
 <style>

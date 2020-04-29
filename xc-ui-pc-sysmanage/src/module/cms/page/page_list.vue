@@ -41,6 +41,19 @@
       </el-table-column>
       <el-table-column prop="siteId" label="站点id" width="180">
       </el-table-column>
+      <el-table-column label="操作" width="80">
+        <template slot-scope="page">
+          <el-button
+            size="small" type="text"
+            @click="edit(page.row.pageId)">编辑
+          </el-button>
+          <el-button
+            size="small" type="text"
+            @click="del(page.row.pageId)">删除
+          </el-button>
+        </template>
+
+      </el-table-column>
     </el-table>
     <!--冒号相当于v-bind;@符号相当与v-on-->
     <el-pagination
@@ -91,18 +104,40 @@
         cmsApi.site_list().then((result) => {
           this.siteList = result.queryResult.list;
         })
+      },
+      edit: function (pageId) {
+
+        this.$router.push({
+          path: '/cms/page/edit/' + pageId
+        })
+      },
+      del: function (pageId) {
+        this.$confirm('您确认删除吗?', '提示', {}).then(() => {
+          cmsApi.del(pageId).then((result => {
+            if (result.success) {
+              this.$message.success("删除成功");
+              //刷新页面
+              this.query()
+            } else {
+              this.$message.error("删除失败");
+            }
+          }))
+        })
+      },
+
+      created() {
+        this.params.page = Number.parseInt(this.$route.query.page || 1),
+          this.params.siteId = this.$route.query.siteId || ''
       }
-    },
-    created() {
-      this.params.page = Number.parseInt(this.$route.query.page || 1),
-        this.params.siteId = this.$route.query.siteId || ''
-    },
-    // 实现进入页面显示数据
-    mounted() {
-      this.query();
-      this.siteQuery();
+      ,
+      // 实现进入页面显示数据
+      mounted() {
+        this.query();
+        this.siteQuery();
+      }
     }
   }
+
 </script>
 <style>
   /*编写页面样式，不是必须*/
