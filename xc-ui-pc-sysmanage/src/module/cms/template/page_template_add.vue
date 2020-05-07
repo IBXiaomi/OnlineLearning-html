@@ -21,20 +21,31 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="页面名称" prop="pageName">
+      <el-form-item label="模板名称" prop="pageName">
+        <el-input v-model="pageForm.pageName" auto-complete="off"></el-input>
+      </el-form-item>
+      <el-form-item label="模板参数" prop="pageName">
         <el-input v-model="pageForm.pageName" auto-complete="off"></el-input>
       </el-form-item>
 
-      <el-form-item label="别名" prop="pageAliase">
-        <el-input v-model="pageForm.pageAliase" auto-complete="off"></el-input>
+      <el-form-item label="数据URL" prop="pagePhysicalPath">
+        <el-input v-model="pageForm.pageDataURL" auto-complete="off"></el-input>
       </el-form-item>
-      <el-form-item label="访问路径" prop="pageWebPath">
-        <el-input v-model="pageForm.pageWebPath" auto-complete="off"></el-input>
-      </el-form-item>
-
-      <el-form-item label="物理路径" prop="pagePhysicalPath">
-        <el-input v-model="pageForm.pagePhysicalPath" auto-complete="off"></el-input>
-      </el-form-item>
+      <!--上传文件div-->
+      <div>
+        <!--<form>-->
+        <!--<input type="file" id="file"/>-->
+        <!--<button id="fileBtn" onclick="uploadFile()">上传</button>-->
+        <!--</form>-->
+        <el-upload style="display: inline;"
+                   class="upload-ckd"
+                   ref="upload"
+                   action="doUpload"
+                   :limit="1"
+                   :before-upload="beforeUpload">
+          <el-button slot="trigger" type="primary" style="margin-left: 10px;">上传模板</el-button>
+        </el-upload>
+      </div>
 
       <el-form-item label="类型">
         <el-radio-group v-model="pageForm.pageType">
@@ -67,9 +78,7 @@
           siteId: '',
           templateId: '',
           pageName: '',
-          pageAliase: '',
-          pageWebPath: '',
-          pagePhysicalPath: '',
+          pageDataURL: '',
           pageType: '',
           pageCreateTime: new Date()
         },
@@ -81,14 +90,8 @@
             {required: true, message: '请选择模版', trigger: 'blur'}
           ],
           pageName: [
-            {required: true, message: '请输入页面名称', trigger: 'blur'}
+            {required: true, message: '请输入模板名称', trigger: 'blur'}
           ],
-          pageWebPath: [
-            {required: true, message: '请输入访问路径', trigger: 'blur'}
-          ],
-          pagePhysicalPath: [
-            {required: true, message: '请输入物理路径', trigger: 'blur'}
-          ]
         }
       }
     },
@@ -124,8 +127,56 @@
           this.templateList = result.queryResult.list
         }))
       },
+      beforeUpload: function (file) {
+        if (file.name === ' ') {
+          this.$message.warning("请选择需要上传的模板");
+          return false
+        }
+        this.files = file;
+        const extension = file.name.split('.')[1] === 'ftl';
+        const isMt10M = file.size / 1024 / 1024 > 10;
+        if (!extension) {
+          this.$message.warning('上传模板只能是ftl格式!');
+          return
+        }
+        if (isMt10M) {
+          this.$message.warning('上传模板大小不能超过 10MB!');
+          return
+        }
+        this.fileName = file.name;
+        setTimeout(() => {
+          this.submitUpload();
+        }, 500);
+        return false // 返回false不会自动上传
+      },
+      submitUpload() {
+        let fileFormData = new FormData();
+        fileFormData.append('file', this.files, this.fileName);//filename是键，file是值，就是要传的文件，test.zip是要传的文件名
+        cmsApi.template_upload(fileFormData).then((result) => {
+          alert(1)
+          if (result.success) {
+            this.$message.success("提交成功");
+          } else if (!result.success) {
+            this.$message.success(result.message);
+          }
+        })
 
-
+        //
+        // this.commonPost({
+        //   url: HMD_UPLOADCKD,
+        //   params: fileFormData,
+        //   requestBody: true
+        // }).then((data) => {
+        //   if (data) {
+        //     this.$message.success("上传成功");
+        //     this.loadData();
+        //   }
+        // }, (error) => {
+        //   console.log(error);
+        //   this.$message.error("上传失败");
+        //   this.loadData();
+        // })
+      },
     }, mounted() {
       this.allTemplateList();
       cmsApi.site_list().then((result => {

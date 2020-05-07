@@ -49,4 +49,9 @@ export const page_template_list = (page, size, params) => {
   return http.requestQuickGet(apiUrl + '/cms/page/template/list/' + page + '/' + size + "?" + query);
 
 };
+//上传模板
+export const template_upload = (params) => {
+  return http.requestPost(apiUrl + '/cms/page/template/upload', params);
+};
+
 

@@ -36,6 +36,10 @@
         <el-input v-model="pageForm.pagePhysicalPath" auto-complete="off"></el-input>
       </el-form-item>
 
+      <el-form-item label="静态化数据URL" prop="dataUrl">
+        <el-input v-model="pageForm.dataUrl" auto-complete="off" size="medium"></el-input>
+      </el-form-item>
+
       <el-form-item label="类型">
         <el-radio-group v-model="pageForm.pageType">
           <el-radio class="radio" label="0">静态</el-radio>
@@ -60,7 +64,7 @@
   export default {
     data() {
       return {
-        pageId:'',
+        pageId: '',
         siteList: [],
         templateList: [],
         pageForm: {
@@ -71,7 +75,8 @@
           pageWebPath: '',
           pagePhysicalPath: '',
           pageType: '',
-          pageCreateTime: new Date()
+          pageCreateTime: new Date(),
+          dataUrl: ''
         },
         pageFormRules: {
           siteId: [
@@ -97,7 +102,7 @@
         this.$refs['pageForm'].validate((valid) => {
           if (valid) {
             this.$confirm('您确认提交吗?', '提示', {}).then(() => {
-              cmsApi.update(this.pageId,this.pageForm).then((result => {
+              cmsApi.update(this.pageId, this.pageForm).then((result => {
                 if (result.success) {
                   this.$message.success("提交成功");
                   this.go_back();
