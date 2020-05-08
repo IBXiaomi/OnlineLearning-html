@@ -13,7 +13,7 @@
 
       <el-input v-model="params.templateName" placeholder="请输入模板名称" style="width:150px"></el-input>
       <el-button type="primary" size="medium" v-on:click="query">查询</el-button>
-      <router-link :to="{path:'/cms/page/add',query:{
+      <router-link :to="{path:'/cms/template/add',query:{
        page:this.params.page,
        siteId:this.params.siteId
 
