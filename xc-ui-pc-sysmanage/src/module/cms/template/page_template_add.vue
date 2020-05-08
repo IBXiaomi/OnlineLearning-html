@@ -33,18 +33,29 @@
       </el-form-item>
       <!--上传文件div-->
       <div>
-        <!--<form>-->
-        <!--<input type="file" id="file"/>-->
-        <!--<button id="fileBtn" onclick="uploadFile()">上传</button>-->
-        <!--</form>-->
-        <el-upload style="display: inline;"
-                   class="upload-ckd"
-                   ref="upload"
-                   action="doUpload"
-                   :limit="1"
-                   :before-upload="beforeUpload">
-          <el-button slot="trigger" type="primary" style="margin-left: 10px;">上传模板</el-button>
-        </el-upload>
+        <form>
+          <el-upload style="display: inline;"
+                     class="upload-ckd"
+                     ref="upload"
+                     action="doUpload"
+                     :limit="1"
+                     :before-upload="beforeUpload">
+            <el-button slot="trigger" type="primary" style="margin-left: 10px;">上传模板</el-button>
+          </el-upload>
+        </form>
+        <!--<el-form-item>-->
+        <!--<el-upload style="display: inline;"-->
+        <!--class="upload-ckd"-->
+        <!--ref="upload"-->
+        <!--action="/cms/page/template/upload"-->
+        <!--:auto-upload="false"-->
+        <!--:limit="1"-->
+        <!--:before-upload="beforeUpload">-->
+        <!--<el-button slot="trigger" size="small" type="primary">选取文件</el-button>-->
+        <!--<el-button ref="file" style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器-->
+        <!--</el-button>-->
+        <!--</el-upload>-->
+        <!--</el-form-item>-->
       </div>
 
       <el-form-item label="类型">
@@ -65,6 +76,8 @@
   </div>
 </template>
 <script>
+
+
   /*编写页面静态部分，即model及vm部分。*/
   import * as cmsApi from '../api/cms'
 
@@ -80,7 +93,8 @@
           pageName: '',
           pageDataURL: '',
           pageType: '',
-          pageCreateTime: new Date()
+          pageCreateTime: new Date(),
+
         },
         pageFormRules: {
           siteId: [
@@ -150,32 +164,15 @@
         return false // 返回false不会自动上传
       },
       submitUpload() {
-        let fileFormData = new FormData();
-        fileFormData.append('file', this.files, this.fileName);//filename是键，file是值，就是要传的文件，test.zip是要传的文件名
+         let fileFormData = new FormData();
+         fileFormData.append('file', this.files, this.fileName);//filename是键，file是值，就是要传的文件，test.zip是要传的文件名
         cmsApi.template_upload(fileFormData).then((result) => {
-          alert(1)
           if (result.success) {
             this.$message.success("提交成功");
           } else if (!result.success) {
             this.$message.success(result.message);
           }
         })
-
-        //
-        // this.commonPost({
-        //   url: HMD_UPLOADCKD,
-        //   params: fileFormData,
-        //   requestBody: true
-        // }).then((data) => {
-        //   if (data) {
-        //     this.$message.success("上传成功");
-        //     this.loadData();
-        //   }
-        // }, (error) => {
-        //   console.log(error);
-        //   this.$message.error("上传失败");
-        //   this.loadData();
-        // })
       },
     }, mounted() {
       this.allTemplateList();
@@ -184,6 +181,7 @@
       }))
     }
   }
+
 </script>
 <style>
   /*编写页面样式，不是必须*/
