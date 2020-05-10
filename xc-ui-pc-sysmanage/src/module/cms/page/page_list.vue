@@ -51,6 +51,10 @@
             size="small" type="text"
             @click="del(page.row.pageId)">删除
           </el-button>
+          <el-button
+            size="small" type="text"
+            @click="preview(page.row.pageId)">页面预览
+          </el-button>
         </template>
 
       </el-table-column>
@@ -123,19 +127,22 @@
             }
           }))
         })
+      },
+      preview: function (pageId) {
+        cmsApi.preview_html(pageId)
       }
     },
-      created() {
-        this.params.page = Number.parseInt(this.$route.query.page || 1),
-          this.params.siteId = this.$route.query.siteId || ''
-      }
-      ,
-      // 实现进入页面显示数据
-      mounted() {
-        this.query();
-        this.siteQuery();
-      }
+    created() {
+      this.params.page = Number.parseInt(this.$route.query.page || 1),
+        this.params.siteId = this.$route.query.siteId || ''
     }
+    ,
+    // 实现进入页面显示数据
+    mounted() {
+      this.query();
+      this.siteQuery();
+    }
+  }
 
 
 </script>

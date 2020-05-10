@@ -54,4 +54,13 @@ export const template_upload = (params) => {
   return http.requestPost(apiUrl + '/cms/page/template/upload', params);
 };
 
+//上传模板
+export const cms_template_add = (params) => {
+  return http.requestPost(apiUrl + '/cms/page/template/add', params);
+};
+
+//页面预览
+export const preview_html = (id) => {
+  return http.requestQuickGet(apiUrl + '/cms/preview/' + id);
+};
 
