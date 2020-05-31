@@ -64,3 +64,8 @@ export const preview_html = (id) => {
   return http.requestQuickGet(apiUrl + '/cms/preview/' + id);
 };
 
+//页面发布
+export const publishPage = (id) => {
+  return http.requestPost(apiUrl + '/cms/page/publishPage/' + id);
+};
+

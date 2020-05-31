@@ -55,6 +55,10 @@
             size="small" type="text"
             @click="preview(page.row.pageId)">页面预览
           </el-button>
+          <el-button
+            size="small" type="text"
+            @click="publishPage(page.row.pageId)">页面发布
+          </el-button>
         </template>
 
       </el-table-column>
@@ -130,6 +134,19 @@
       },
       preview: function (pageId) {
         cmsApi.preview_html(pageId)
+      },
+      publishPage:function (pageId) {
+        this.$confirm('您确认发布吗?', '提示', {}).then(() => {
+          cmsApi.publishPage(pageId).then((result => {
+            if (result.success) {
+              this.$message.success("发布成功");
+              //刷新页面
+              this.query()
+            } else {
+              this.$message.error("发布失败");
+            }
+          }))
+        })
       }
     },
     created() {
